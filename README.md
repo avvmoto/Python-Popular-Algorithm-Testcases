@@ -21,4 +21,9 @@ Pick up an algorithm and implement it as your daily training.
 
 ```
 $ ruby -e 'puts ["bellman_ford","dikstra (array)","dikstra (priority queue)","quick sort","merge sort","heap sort","bucket sort","quick select","union find","toporogical sort","binary_search"].sample'
+bellman_ford
+
+$ cp mock/bellman_ford.py .
+
+# edit ./bellman_ford.py and implement Bellman–Ford algorithm
 ```
