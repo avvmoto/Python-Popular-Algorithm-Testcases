@@ -1,25 +1,17 @@
-import unittest   # The test framework
-import toporogical_sort    # The code to test
+import unittest  # The test framework
+import toporogical_sort  # The code to test
+
 
 class Test_TestToporogicalSort(unittest.TestCase):
     def test_toporogical_sort(self):
         cases = [
+            {"edges": [[]], "msg": "one node"},
             {
-                "edges":[[]],
-                "msg": "one node"
-            },                     
-            {
-                "edges":[[5], [3,6], [5,7], [0,7],[1,6],[],[7],[]],
-                "msg": "big graph"
-            },                     
-            {
-                "edges":[[],[],[],[]],
-                "msg": "empty edge"
-            },                     
-            {
-                "edges":[[1],[],[],[]],
-                "msg": "almost empty edge"
-            },                     
+                "edges": [[5], [3, 6], [5, 7], [0, 7], [1, 6], [], [7], []],
+                "msg": "big graph",
+            },
+            {"edges": [[], [], [], []], "msg": "empty edge"},
+            {"edges": [[1], [], [], []], "msg": "almost empty edge"},
         ]
 
         for i, c in enumerate(cases):
@@ -32,7 +24,7 @@ class Test_TestToporogicalSort(unittest.TestCase):
 
                 index = {}
                 for j, v in enumerate(got):
-                    index[v]=j
+                    index[v] = j
 
                 for v in range(n):
                     self.assertTrue(v in index)
@@ -41,7 +33,6 @@ class Test_TestToporogicalSort(unittest.TestCase):
                     for u in edge:
                         self.assertGreater(index[u], index[v])
 
-                
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -1,4 +1,4 @@
-from doubly_linked_list import Node   # The test framework
+from doubly_linked_list import Node  # The test framework
 import unittest
 
 
@@ -47,5 +47,6 @@ class Test_TestDoublyLinkedList(unittest.TestCase):
         head.next.remove()
         test_read("remove 3", [0, 0])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

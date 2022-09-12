@@ -1,5 +1,6 @@
-import unittest   # The test framework
-import union_find    # The code to test
+import unittest  # The test framework
+import union_find  # The code to test
+
 
 class Test_TestUnionFind(unittest.TestCase):
     def test_union_find(self):
@@ -25,9 +26,5 @@ class Test_TestUnionFind(unittest.TestCase):
         self.assertEqual(False, uf.isSame(0, 5))
 
 
-    
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
