@@ -3,72 +3,93 @@ import math
 from typing import List, Tuple
 
 
-def dijkstra_array(g: List[List[List[int]]], s: int, t: int) -> Tuple[List[int], int]:
-    n = len(g)
+def dijkstra_array(
+    graph: List[List[List[int]]], src: int, tgt: int
+) -> Tuple[List[int], int]:
+    """Dijkstra algorythm using array.
+
+    Args:
+        graph (List[List[List[int]]]): Adjacency list of a directed weighted graph. graph[v] = [u_i, weight_i] means there is v->u_i edge with cost weight_i.
+        src (int): Source node
+        dst (int): Destination node
+
+    Returns:
+        Tuple[List[int], int]: Shortest path from src to dst, and weight of the shortest path. Returns ([], math.inf) if theres no rote.
+    """
+    n = len(graph)
     dist = [math.inf] * n
     prev = [-1] * n
-    done = [False] * n
+    seen = [False] * n
 
-    dist[s] = 0
+    dist[src] = 0
 
     for _ in range(n - 1):
+        min_v = 0
         min_dist = math.inf
-        v = -1
-        for u in range(n):
-            if not done[u] and dist[u] < min_dist:
-                v = u
-                min_dist = dist[u]
 
-        if v == t or v == -1:
-            break
+        for v in range(n):
+            if dist[v] < min_dist and not seen[v]:
+                min_dist = dist[v]
+                min_v = v
 
-        for u, weight in g[v]:
+        seen[min_v] = True
+
+        for u, weight in graph[min_v]:
             new_dist = min_dist + weight
             if new_dist < dist[u]:
                 dist[u] = new_dist
-                prev[u] = v
+                prev[u] = min_v
 
-        done[v] = True
+    shortest_path = []
+    if not math.isinf(dist[tgt]):
+        shortest_path.append(tgt)
+        while shortest_path[-1] != src:
+            shortest_path.append(prev[shortest_path[-1]])
+        shortest_path.reverse()
 
-    if math.isinf(dist[t]):
-        return [], math.inf
-
-    shortest = [t]
-    while shortest[-1] != s:
-        shortest.append(prev[shortest[-1]])
-    shortest.reverse()
-    return shortest, dist[t]
+    return shortest_path, dist[tgt]
 
 
-def dijkstra_pq(g: List[List[List[int]]], s: int, t: int) -> Tuple[List[int], int]:
-    n = len(g)
+def dijkstra_pq(
+    graph: List[List[List[int]]], src: int, tgt: int
+) -> Tuple[List[int], int]:
+    """Dijkstra algorythm using priority queue.
+
+    Args:
+        graph (List[List[List[int]]]): Adjacency list of a directed weighted graph. graph[v] = [u_i, weight_i] means there is v->u_i edge with cost weight_i.
+        src (int): Source node
+        dst (int): Destination node
+
+    Returns:
+        Tuple[List[int], int]: Shortest path from src to dst, and weight of the shortest path. Returns ([], math.inf) if theres no rote.
+    """
+
+    n = len(graph)
     dist = [math.inf] * n
     prev = [-1] * n
-    dist[s] = 0
-    q = [(0, s)]
 
-    while q:
-        d, v = heapq.heappop(q)
+    pq = [(src, 0)]
+    dist[src] = 0
 
-        if v == t:
+    while pq:
+        v, d = heapq.heappop(pq)
+
+        if v == tgt:
             break
 
-        if d > dist[v]:
-            continue
-
-        for u, weight in g[v]:
-            new_dist = dist[v] + weight
+        for u, weight in graph[v]:
+            new_dist = d + weight
             if new_dist < dist[u]:
-                dist[u] = new_dist
                 prev[u] = v
-                heapq.heappush(q, (new_dist, u))
+                dist[u] = new_dist
 
-    if math.isinf(dist[t]):
-        return [], math.inf
+                heapq.heappush(pq, (u, new_dist))
 
-    shortest = [t]
-    while shortest[-1] != s:
-        shortest.append(prev[shortest[-1]])
-    shortest.reverse()
+    shortest_path = []
+    if not math.isinf(dist[tgt]):
+        shortest_path.append(tgt)
+        while shortest_path[-1] != src:
+            shortest_path.append(prev[shortest_path[-1]])
+        shortest_path.reverse()
 
-    return shortest, dist[t]
+    return shortest_path, dist[tgt]
